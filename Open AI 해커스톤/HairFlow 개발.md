@@ -93,11 +93,11 @@ hairflow/
 ```
 ## 🔑 필요한 API 키 / 계정
 
-- [ ]  OpenAI API Key → platform.openai.com
-- [ ]  Supabase 프로젝트 → supabase.com
-- [ ]  Vercel 계정 → vercel.com
-- [ ]  Toss Payments 테스트 키 → developers.tosspayments.com
-- [ ]  GitHub 레포지토리 생성
+- [x]  OpenAI API Key → platform.openai.com
+- [x]  Supabase 프로젝트 → supabase.com
+- [x]  Vercel 계정 → vercel.com
+- [x]  Toss Payments 테스트 키 → developers.tosspayments.com
+- [x]  GitHub 레포지토리 생성
 
 ## 🎬 3분 시연 영상 구성
 
