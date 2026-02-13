@@ -27,3 +27,4 @@ unset ANTHROPIC_API_KEY
 다시 실행하면 공식 서버로 연결됩니다. 
 claude
 ```
+
