@@ -277,7 +277,6 @@ async function uploadToFalCdn(imageUrl: string): Promise<string> {
 | IP-Adapter Face ID   | 얼굴 합성                     | ⭐⭐    | ⭐⭐⭐   | $   |
 | Gemini Imagen        | 이미지 편집                    | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | $$$ |
 
-IMPORTANT
 
 **`guidance_scale`은 원본 보존의 핵심 파라미터**
 
@@ -355,7 +354,7 @@ const response = await openai.chat.completions.create({
 
 ## 8. 트러블슈팅 & 교훈
 
-### 🔥 Fal.ai가 Supabase URL 접근 불가
+###  Fal.ai가 Supabase URL 접근 불가
 
 - **원인**: Supabase Storage의 private 버킷 URL은 외부에서 접근 불가
 - **해결**: 
@@ -363,7 +362,7 @@ const response = await openai.chat.completions.create({
     uploadToFalCdn() — 이미지를 다운로드 후 Fal CDN에 재업로드
 - **교훈**: 외부 AI 서비스에 이미지를 전달할 때는 반드시 **공개 접근 가능한 URL** 필요
 
-### 🔥 Vercel 빌드 시 API 키 없어서 실패
+###  Vercel 빌드 시 API 키 없어서 실패
 
 - **원인**: 빌드 타임에 `process.env.OPENAI_API_KEY`를 직접 참조하면 에러
 - **해결**: 
@@ -392,7 +391,7 @@ export function getOpenAI(): OpenAI {
 }
 ```
 
-### 🔥 AI 생성 이미지 URL 만료
+###  AI 생성 이미지 URL 만료
 
 - **원인**: Fal.ai/Replicate가 반환하는 URL은 임시 URL (수 시간 후 만료)
 - **해결**: 
@@ -400,13 +399,13 @@ export function getOpenAI(): OpenAI {
     cacheGeneratedImage() — 생성 직후 Supabase Storage에 영구 저장
 - **교훈**: AI 생성 이미지는 **반드시 자체 스토리지에 캐싱**
 
-### 🔥 이미지 생성 시 원본과 괴리감
+###  이미지 생성 시 원본과 괴리감
 
 - **원인**: `guidance_scale`이 너무 높으면 프롬프트를 과도하게 따름
 - **해결**: `guidance_scale: 2` + 보존 요소 명시적 나열 + `seed` 고정
 - **교훈**: Image-to-Image 편집에서 **guidance_scale은 변경 강도**를 제어
 
-### 🔥 Next.js Image 컴포넌트 외부 이미지 에러
+###  Next.js Image 컴포넌트 외부 이미지 에러
 
 - **원인**: 허용되지 않은 hostname의 이미지 사용
 - **해결**: 
@@ -416,7 +415,7 @@ export function getOpenAI(): OpenAI {
     
     next.config.ts 업데이트
 
-### 🔥 API Route 타임아웃 (이미지 생성 느림)
+###  API Route 타임아웃 (이미지 생성 느림)
 
 - **원인**: Vercel 기본 타임아웃 10초, AI 이미지 생성은 20~45초
 - **해결**: `export const maxDuration = 60;` + `Promise.race()` 타임아웃
@@ -439,9 +438,7 @@ export function getOpenAI(): OpenAI {
     
     lib/prompts.ts에 모든 AI 프롬프트를 모아두면 수정이 쉬움
 
-### 🛠 개발 중 패턴
 
-markdown
 
 ## AI에게 요청할 때 좋은 패턴
 
@@ -457,16 +454,13 @@ markdown
 
 4. 각 카드에 AI 생성 이미지 + 어울림 점수 표시"
 
-### ❌ 모호한 요청
 
-"스타일 추천 기능 만들어줘"
+##  환경변수 관리 체크리스트
 
-### 📦 환경변수 관리 체크리스트
-
-env
 
 # .env.local (로컬 개발)
 
+```
 NEXT_PUBLIC_SUPABASE_URL=         # 프론트+백 공통
 
 NEXT_PUBLIC_SUPABASE_ANON_KEY=    # 프론트+백 공통
@@ -481,11 +475,9 @@ TOSS_PAYMENTS_SECRET_KEY=         # 서버 전용
 
 NEXT_PUBLIC_TOSS_CLIENT_KEY=      # 프론트 전용
 
-CAUTION
+```
 
-`NEXT_PUBLIC_` 접두사가 없는 환경변수는 **서버에서만 접근 가능**. Vercel에 배포 시 반드시 **Settings → Environment Variables**에 모두 등록!
-
-### 🏗 Supabase 활용 패턴
+###  Supabase 활용 패턴
 
 
 ```typescript
@@ -507,14 +499,6 @@ import { createAdminClient } from '@/lib/supabase/admin';    // RLS 우회
 // - Cron Job에서 자동 처리할 때
 ```
 
-### 🚀 배포 전 체크리스트
-
-- [ ]  모든 환경변수가 Vercel에 등록되었는지 확인
-- [ ]  next.config.ts에 새 외부 이미지 도메인 추가했는지 확인
-- [ ]  AI 호출이 있는 API Route에 `maxDuration` 설정했는지 확인
-- [ ]  vercel.json에 Cron Job 설정 확인
-- [ ]  RLS 정책이 올바르게 설정되었는지 확인
-- [ ]  Supabase Storage 버킷 권한 설정 확인
 
 ### 💡 성능 최적화 팁
 
